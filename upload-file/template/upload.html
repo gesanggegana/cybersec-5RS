@@ -1,0 +1,37 @@
+<!-- templates/upload.html -->
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Upload File — Demo SI Singkat</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; padding: 24px; }
+    .note { background:#fff3cd; border:1px solid #ffeeba; padding:10px; margin-bottom:12px; }
+    form { margin-top:12px; }
+  </style>
+</head>
+<body>
+  <h2>Upload File (Vulnerable Demo)</h2>
+  <div class="note">
+    <strong>Catatan keamanan:</strong> Form ini <em>tidak</em> melakukan validasi nama/tipe file dan menyimpan file dengan nama asli. Hanya untuk latihan di lingkungan terisolasi.
+  </div>
+
+  <form method="post" enctype="multipart/form-data">
+    <label>
+      Pilih file:
+      <input type="file" name="f" required />
+    </label>
+    <br/><br/>
+    <button type="submit">Upload</button>
+  </form>
+
+  <hr/>
+  <p>
+    Petunjuk latihan: coba upload file bernama <code>../../etc/passwd</code> atau upload webshell (hanya dalam VM/isolated env) untuk melihat bagaimana path traversal / unsafe upload bisa dieksploitasi.
+  </p>
+  <p>
+    Untuk mitigasi singkat: batasi ekstensi/MIME, simpan dengan nama acak (UUID), dan simpan di direktori non-eksekusi.
+  </p>
+</body>
+</html>
