@@ -1,0 +1,48 @@
+name: "CodeQL Analysis"
+
+# Trigger on pushes, PRs and weekly schedule
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 3 * * 0'  # weekly Sunday 03:00 UTC
+
+jobs:
+  analyze:
+    name: Run CodeQL analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'python' ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+          # If you have a custom query pack in the repo, uncomment and adjust the next line:
+          # packs: ./codeql/python-custom-queries
+
+      - name: Setup Python (for autobuild / environment)
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Autobuild (attempt to build / prepare the project)
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Run CodeQL queries
+        uses: github/codeql-action/analyze@v2
+        with:
+          # By default runs the standard query suite for the language(s) checked
+          category: "/language:python"
